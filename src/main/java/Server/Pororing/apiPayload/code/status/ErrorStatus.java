@@ -13,7 +13,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
     TEMP_EXCEPTION(HttpStatus.BAD_REQUEST, "TEMP4001", "예외처리 테스트"),
-    TEXT_NOT_DETECTED(HttpStatus.BAD_REQUEST, "AREA4005", "텍스트를 감지할 수 없습니다.");
+    TEXT_NOT_DETECTED(HttpStatus.BAD_REQUEST, "AREA4005", "텍스트를 감지할 수 없습니다."),
+    GEMINI_NOT_WORK(HttpStatus.BAD_REQUEST, "AREA4006", "제미나이 실패.");
 
     private final HttpStatus httpStatus;
     private final String code;

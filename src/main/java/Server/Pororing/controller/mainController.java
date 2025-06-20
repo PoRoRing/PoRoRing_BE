@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class mainController {
 
@@ -41,8 +41,8 @@ public class mainController {
         );
     }
 
-    @Operation(summary = "전체 로직 테스트")
-    @PostMapping(value = "/gemini", consumes = "multipart/form-data")
+    @Operation(summary = "텍스트 변환")
+    @PostMapping(value = "/converter", consumes = "multipart/form-data")
     public ApiResponse<TestResponse.geminiResultDTO> extracasdasdtText (@RequestPart(value = "file") MultipartFile file,
                                                                         @RequestPart(value="preInformation") promptRequest2 request)throws IOException {
         String ocrResult = googleVisionOCRService.detectText(file); // 텍스트 검출

@@ -59,16 +59,27 @@ public class PromptService {
             prompt.append("그 외에 참고로 ").append(userInfo.getEtc()).append(" 이야.\n");
         }
 
-        prompt.append("\n아래 내용들을 알고 싶어.\n");
-        for (String option : infoOptions) {
-            prompt.append("- ").append(INFO_MAP.getOrDefault(option, option)).append("\n");
+        if (infoOptions.size() == 1 && infoOptions.contains("전체 내용을 그대로 알려줘.")) {
+            prompt.append("-이미지의 종류가 식품, 의약품, 뷰티 및 미용 제품이라면 상품명, 문서라면 문서 제목을 만들어서 알려줘.\n");
+            prompt.append("-이미지에서 인식된 전체 내용을 가능한 한 빠짐없이 설명해 줘. 글자 수 제한은 없으며, 이모티콘, 마크업, 불필요한 꾸밈 표현은 절대 사용하지 말고, 일반 텍스트만 사용해.");
+        } else {
+            prompt.append("\n아래 내용들을 알고 싶어.\n");
+            for (String option : infoOptions) {
+                prompt.append("-이미지의 종류가 식품, 의약품, 뷰티 및 미용 제품이라면 상품명, 문서라면 문서 제목을 만들어서 알려줘.\n");
+                prompt.append("- ").append(INFO_MAP.getOrDefault(option, option)).append("\n");
+            }
+
+            prompt.append("\n응답은 반드시 다음 형식의 순수 JSON 문자열이어야 해: {\"title\": \"...\", \"result\": \"...\"}.");
+            prompt.append("\n'title'은 이미지에서 인식한 대상의 이름이나 제목을 의미해. 식품이나 의약품, 뷰티 제품의 경우 상품명을, 문서의 경우 문서 제목을 간결하게 작성해 줘.");
+            prompt.append("\n'result'는 사용자가 요청한 정보를 바탕으로 존댓말로 작성한 설명이야. 전체 분량은 1000자 이내로 제한하고, 소제목이나 문단 구분 없이 하나의 줄글 형태로 이어서 작성해 줘.");
+            prompt.append("\n절대로 마크다운 코드 블록(예: ```json), 작은 따옴표('), 줄바꿈 문자(\\n), 이스케이프 문자(\\)를 사용하지 마.");
+            prompt.append("\nJSON은 하나의 객체로만 구성해야 하고, 앞뒤 설명 없이 JSON 객체만 응답해 줘.");
+            prompt.append("\n질문에 직접적으로 관련된 내용만 포함해 줘. 배경 설명이나 일반적인 정보, 서론적인 문장은 생략해 줘.");
+            prompt.append("\n'안녕하세요', '~에 대해 말씀드리겠습니다', '~를 고려할 때' 같은 형식적인 서론 문장은 절대 쓰지 마.");
+            prompt.append("\n설명은 항상 핵심 내용부터 바로 시작해 줘. 사용자의 상태 요약도 생략하고, 질문과 직접 관련된 정보만 포함해 줘.");
+            prompt.append("\n추가적인 배경 설명, 인사말, 문맥 소개 없이 바로 설명을 시작해.");
+            prompt.append("\n이모티콘, 마크업, 불필요한 꾸밈 표현은 절대 사용하지 말고, 일반 텍스트만으로 작성해 줘.");
         }
-
-        prompt.append("\n존댓말로 작성해 줘. 전체 분량은 1000자 이내로 제한하고, 소제목이나 문단 구분 없이 하나의 줄글 형태로 이어서 설명해 줘.");
-        prompt.append("\n질문에 직접적으로 관련된 내용만 포함해 줘. 배경 설명이나 일반적인 정보, 서론적인 문장은 생략해 줘.");
-        prompt.append("\n이모티콘, 마크업, 불필요한 꾸밈 표현은 절대 사용하지 말고, 일반 텍스트만으로 작성해 줘.");
-        prompt.append("\n알고 싶은 내용이 \"전체 내용을 그대로 알려줘.\" 하나인 경우에는 글자 수 제한 상관 없이 답변해 줘.");
-
         return prompt.toString().trim();
     }
 }

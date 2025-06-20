@@ -35,6 +35,7 @@ public class TestResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class geminiResultDTO{
+        String name;
         String geminiResult;
     }
 }

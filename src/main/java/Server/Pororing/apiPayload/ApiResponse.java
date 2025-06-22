@@ -11,17 +11,16 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-@JsonPropertyOrder({"isSuccess","code","message","result"}) // JSON으로 직렬화를 할 때 필드의 순서를 지정하는데 사용
+@JsonPropertyOrder({"isSuccess","code","message","result"})
 public class ApiResponse<T> {
 
-    @JsonProperty("isSuccess") // 이름을 명확하게 지정
+    @JsonProperty("isSuccess")
     private final Boolean isSuccess;
-    private final String code; // 응답코드
-    private final String message; // 메시지
-    @JsonInclude(JsonInclude.Include.NON_NULL) // result 필드가 null일 경우 JSON 응답에 포함하지 않도록 설절
-    private T result; // null이거나 나중에 값이 바뀔 수 있음
+    private final String code;
+    private final String message;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private T result;
 
-    // 성공한 경우 응답 생성
 
     public static <T> ApiResponse<T> onSuccess(T result){
         return new ApiResponse<>(true, SuccessStatus._OK.getCode() , SuccessStatus._OK.getMessage(), result);
@@ -31,7 +30,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(true, code.getReasonHttpStatus().getCode() , code.getReasonHttpStatus().getMessage(), result);
     }
 
-    // 실패한 경우 응답 생성
     public static <T> ApiResponse<T> onFailure(String code, String message, T data){
         return new ApiResponse<>(false, code, message, data);
     }
